@@ -1,0 +1,44 @@
+<div>
+    <h1>
+        Customer Questions About Product
+    </h1>
+    <p>This is just a test</p>
+</div>
+
+<?php
+/**
+* @var QuestionList $block
+* @var Escaper $escaper
+ * * @var QuestionRepository $questionRepository
+*/
+
+use Magebit\Faq\Block\QuestionList;
+use Magebit\Faq\Model\QuestionRepository;
+use Magento\Framework\Escaper;
+
+$questions = $block->getQuestions();
+?>
+
+<div id="accordion" data-mage-init='{
+        "accordion":{
+            "active": [1, 2],
+            "collapsible": true,
+            "openedState": "active",
+            "multipleCollapsible": true
+        }}'>
+    <?php foreach ($questions as $question): ?>
+        <div data-role="collapsible"
+             class="question-text faq">
+            <div data-role="trigger">
+                <h4>
+                    <?= __($escaper->escapeHtml($question->getQuestion())) ?>
+                </h4>
+            </div>
+        </div>
+        <div data-role="content"
+             class='question-answer faq'>
+            <?= __($escaper->escapeHtml($question->getAnswer())) ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+

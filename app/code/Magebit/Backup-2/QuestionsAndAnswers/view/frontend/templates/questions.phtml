@@ -1,0 +1,64 @@
+<?php
+
+/** @var \Magento\Catalog\Block\Product\View $productBlock */
+/**
+* @var QuestionList $block
+* @var Escaper $escaper
+* @var QuestionRepository $questionRepository
+*/
+
+// use Magebit\Faq\Block\QuestionList;
+// use Magebit\Faq\Model\QuestionRepository;
+// use Magento\Framework\Escaper;
+
+$questions = $block->getQuestions();
+$product = $block->getProduct();
+// var_dump($product->getName());
+// die();
+?>
+
+<h2>
+    Customer Questions About "<?= $product->getName()?>"
+</h2>
+<h3>
+    Ask Your Question
+</h3>
+<form action="<?= $block->getUrl('qna/question/newquestion') ?>" 
+      method="post" 
+      id="question-form" >
+    <input name=product type=hidden value="<?= $product->getName()?>">
+    <input name=answer type=hidden value="Some Answer">
+    <textarea name="question"></textarea>
+    <button type="submit">Submit</button>
+</form>
+<h3>
+    Answered Questions
+</h3>
+
+<div id="accordion" data-mage-init='{
+        "accordion":{
+            "active": [1, 2],
+            "collapsible": true,
+            "openedState": "active",
+            "multipleCollapsible": true
+        }}'>
+    <?php foreach ($questions as $question): ?>
+        <div data-role="collapsible"
+             class="question-text faq">
+            <div data-role="trigger">
+                <h4>
+                    <?= __($escaper->escapeHtml($question->getQuestion())) ?>
+                </h4>
+                <p>
+                    <?= __($escaper->escapeHtml($question->getProduct())) ?>
+                </p>
+            </div>
+        </div>
+        <div data-role="content"
+             class='question-answer faq'>
+            <?= __($escaper->escapeHtml($question->getAnswer())) ?>
+        </div>
+        <hr>
+    <?php endforeach; ?>
+</div>
+
