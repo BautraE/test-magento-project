@@ -1,0 +1,35 @@
+<?php
+/**
+ * @var QuestionList $block
+ */
+
+$questions = $block->getQuestions();
+?>
+
+<h3 class="legend">Submitted questions</h3>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Question</th>
+        <th>Status</th>
+        <th>Edit Question</th>
+        <th>Delete</th>
+        <th>Last Updated</th>
+    </tr>
+    <?php foreach ($questions as $question): ?>
+        <tr>
+            <td><?= $block->getProductName($question) ?></td>
+            <td><?= __($escaper->escapeHtml($question->getQuestion())) ?></td>
+            <td><?= $block->isAnswered($question) ?></td>
+            <td>Edit</td>
+            <td>
+                <?php if($question->getVisibility() === 0): ?>
+                    <a href="<?= $block->getUrl('qna/account/delete', ['question_id' => $question->getId()]); ?>">Delete</a>
+                <?php else: ?>
+                    <p>Delete</p>
+                <?php endif; ?>
+            </td>
+            <td><?= __($escaper->escapeHtml($question->getUpdatedAt())) ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>

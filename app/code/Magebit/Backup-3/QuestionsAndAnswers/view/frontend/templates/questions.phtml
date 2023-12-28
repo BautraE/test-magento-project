@@ -1,0 +1,49 @@
+<?php
+
+/**
+* @var QuestionList $block
+* @var Escaper $escaper
+* @var QuestionRepository $questionRepository
+*/
+
+$questions = $block->getQuestions();
+$product = $block->getProduct();
+?>
+
+<div>
+    <h2>
+        Customer Questions About "<?= $product->getName()?>"
+    </h2>
+    <h2>
+        Product ID: "<?= $product->getId()?>"
+    </h2>
+
+    <h3>
+        Ask Your Question
+    </h3>
+    <form action="<?= $block->getUrl('qna/question/newquestion') ?>" 
+        method="post" 
+        id="question-form" >
+        <input name="product_id" type=hidden value="<?= $product->getId()?>">
+        <input name="created_by_admin" type=hidden value="0">
+        <textarea name="question"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>
+        Answered Questions
+    </h3>
+    <?php foreach ($questions as $question): ?>
+        <hr>
+        <div>
+            <h4>Question:</h4>
+            <p>
+                <?= __($escaper->escapeHtml($question->getQuestion())) ?>
+            </p>
+            <h4>Answer:</h4>
+            <p>
+                <?= __($escaper->escapeHtml($question->getAnswer())) ?>
+            </p>
+    <?php endforeach; ?>
+</div>
+
